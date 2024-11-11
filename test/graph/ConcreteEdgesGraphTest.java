@@ -1,45 +1,58 @@
-/* Copyright (c) 2015-2016 MIT 6.005 course staff, all rights reserved.
- * Redistribution of original or derived work requires permission of course staff.
- */
 package graph;
 
 import static org.junit.Assert.*;
 
+import java.util.Collections;
+
 import org.junit.Test;
 
-/**
- * Tests for ConcreteEdgesGraph.
- * 
- * This class runs the GraphInstanceTest tests against ConcreteEdgesGraph, as
- * well as tests for that particular implementation.
- * 
- * Tests against the Graph spec should be in GraphInstanceTest.
- */
 public class ConcreteEdgesGraphTest extends GraphInstanceTest {
-    
-    /*
-     * Provide a ConcreteEdgesGraph for tests in GraphInstanceTest.
-     */
-    @Override public Graph<String> emptyInstance() {
+
+    @Override
+    public Graph<String> emptyInstance() {
         return new ConcreteEdgesGraph();
     }
-    
-    /*
-     * Testing ConcreteEdgesGraph...
-     */
-    
-    // Testing strategy for ConcreteEdgesGraph.toString()
-    //   TODO
-    
-    // TODO tests for ConcreteEdgesGraph.toString()
-    
-    /*
-     * Testing Edge...
-     */
-    
-    // Testing strategy for Edge
-    //   TODO
-    
-    // TODO tests for operations of Edge
-    
+
+    @Test
+    public void testAddEdge() {
+        ConcreteEdgesGraph graph = new ConcreteEdgesGraph();
+        graph.add("A");
+        graph.add("B");
+        assertEquals("Edge A -> B with weight 10 should return previous weight 0", 
+                     0, graph.set("A", "B", 10));
+        assertTrue("Graph should contain vertex A", graph.vertices().contains("A"));
+        assertTrue("Graph should contain vertex B", graph.vertices().contains("B"));
+    }
+
+    @Test
+    public void testUpdateEdge() {
+        ConcreteEdgesGraph graph = new ConcreteEdgesGraph();
+        graph.add("A");
+        graph.add("B");
+        graph.set("A", "B", 10);
+        assertEquals("Updating edge A -> B to 20 should return previous weight 10", 
+                     10, graph.set("A", "B", 20));
+    }
+
+    @Test
+    public void testRemoveEdge() {
+        ConcreteEdgesGraph graph = new ConcreteEdgesGraph();
+        graph.add("A");
+        graph.add("B");
+        graph.set("A", "B", 10);
+        graph.set("A", "B", 0);
+        assertEquals("Expected sources map to be empty after edge removal", 
+                     Collections.emptyMap(), graph.sources("B"));
+    }
+
+    @Test
+    public void testToString() {
+        ConcreteEdgesGraph graph = new ConcreteEdgesGraph();
+        graph.add("A");
+        graph.add("B");
+        graph.set("A", "B", 10);
+        String expectedString = "Graph with vertices: [A, B] and edges: [A -> B (10)]";
+        assertEquals("Graph toString output should match expected format", 
+                     expectedString, graph.toString());
+    }
 }
